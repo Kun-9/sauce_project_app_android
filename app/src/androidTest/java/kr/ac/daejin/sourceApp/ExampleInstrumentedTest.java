@@ -1,4 +1,4 @@
-package kr.ac.daejin.socketchat;
+package kr.ac.daejin.sourceApp;
 
 import android.content.Context;
 

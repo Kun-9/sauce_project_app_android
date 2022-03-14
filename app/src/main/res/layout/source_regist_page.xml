@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+<!--
+탭 구현
+1. 소스 등록
+    소스 삭제
+    소스 정보 조회
+2. 소스 확인 (리스트)
+    소스 카트리지에 등록
+
+
+-->
+
+    <LinearLayout
+        android:layout_marginRight="80dp"
+        android:layout_marginLeft="80dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="명칭 :"
+        android:layout_marginRight="10dp"
+        android:textSize="18dp"/>
+
+    <EditText
+        android:id="@+id/sourceName"
+        android:text=""
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:imeOptions="actionDone"/>
+
+    </LinearLayout>
+
+
+    <CheckBox
+        android:id="@+id/isLiquidCheck"
+        android:text="액체 여부"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <Button
+        android:id="@+id/registBtn"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="130dp"
+        android:layout_marginRight="130dp"
+        android:text="소스 등록"
+        />
+</LinearLayout>
