@@ -4,8 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../Library/Android/sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.3454913880445795" />
+        <entry key="app/src/main/res/drawable/button_effect.xml" value="0.43025641025641026" />
+        <entry key="app/src/main/res/drawable/button_style.xml" value="0.43025641025641026" />
+        <entry key="app/src/main/res/drawable/dialog_round.xml" value="0.48055555555555557" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.27014218009478674" />
+        <entry key="app/src/main/res/drawable/text_style.xml" value="0.43025641025641026" />
+        <entry key="app/src/main/res/font/font_resource.xml" value="0.4441025641025641" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.5832903647143746" />
+        <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.26902173913043476" />
+        <entry key="app/src/main/res/layout/custom_dialog_textinput.xml" value="0.36322188449848025" />
         <entry key="app/src/main/res/layout/custom_output_page.xml" value="0.41408664577776627" />
         <entry key="app/src/main/res/layout/source_regist_page.xml" value="0.45" />
         <entry key="app/src/main/res/layout/source_registed_list_page.xml" value="0.45" />

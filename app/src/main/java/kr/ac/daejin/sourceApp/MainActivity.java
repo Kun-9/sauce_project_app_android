@@ -28,12 +28,13 @@ public class MainActivity extends AppCompatActivity {
     public static Context context_main;
 
     Button startBtn;
-    Button sendBtn, customOutputBtn, registSoruceBtn;
+    Button sendBtn, customOutputBtn, registSoruceBtn,
+            showSourceListBtn, showCurrentSourceListBtn, showCurrentSourceExistBtn;
     TextView chatLog;
     EditText sendMsgBox;
     EditText nameBox;
     Socket socket;
-
+    StringBuilder chattingStringBuilder;
 
     public source_class.SourceList sourceList;
     public ArrayAdapter Adapter;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // 채팅 중 상태
-    public int checkChatting = 0;
+    public int checkConnecting = 0;
     // Log 태그
     String TAG = "MainActivity";
 
@@ -73,6 +74,61 @@ public class MainActivity extends AppCompatActivity {
         nameBox = (EditText) findViewById(R.id.nameBox);
         customOutputBtn = (Button) findViewById(R.id.customOutputBtn);
         registSoruceBtn = (Button) findViewById(R.id.registSoruceBtn);
+        showSourceListBtn = (Button) findViewById(R.id.showSourceListBtn);
+        showCurrentSourceExistBtn = (Button) findViewById(R.id.showCurrentSourceExistBtn);
+        showCurrentSourceListBtn = (Button) findViewById(R.id.showCurrentSourceListBtn);
+
+        showSourceListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<source_class.Source> sources = sourceList.getSourceList();
+                int size = sources.size();
+
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < size ; i++) {
+                    sb.append("[ ").append(sources.get(i).getName()).append(", ").append(sources.get(i).getIsLiquid()).append(" ] ");
+                }
+                chattingStringBuilder.append("등록된 소스 리스트 :\n");
+                chattingStringBuilder.append(sb).append("\n");
+                chatLog.setText(chattingStringBuilder);
+            }
+        });
+
+        showCurrentSourceListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                source_class.Source[] currentSourceList = sourceList.getCurrentSourceList();
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < 6 ; i++) {
+                    if (currentSourceList[i] != null) {
+                        sb.append("[ ").append(currentSourceList[i].getName()).append(", ").append(currentSourceList[i].getIsLiquid()).append(" ] ");
+                    } else {
+                        sb.append("[ " + "null" + " ] ");
+                    }
+                }
+                chattingStringBuilder.append("카트리지 소스 리스트 :\n");
+                chattingStringBuilder.append(sb).append("\n");
+                chatLog.setText(chattingStringBuilder);
+            }
+        });
+
+        showCurrentSourceExistBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int[] currentSourceExist = sourceList.getCurrentSourceExist();
+
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < 6 ; i++) {
+                    sb.append("[ ").append(currentSourceExist[i]).append(" ] ");
+                }
+                chattingStringBuilder.append("카트리지 등록 여부 :\n");
+                chattingStringBuilder.append(sb).append("\n");
+                chatLog.setText(chattingStringBuilder);
+            }
+        });
 
 
         customOutputBtn.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         chatLog.setMovementMethod(new ScrollingMovementMethod());
 
         // 채팅 내역
-        StringBuilder chattingStringBuilder = new StringBuilder();
+        chattingStringBuilder = new StringBuilder();
 
         // CHAT START 버튼을 눌렀을 때
         startBtn.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "수신 시작");
                 chattingStringBuilder.append("연결 시작");
                 // 현재 채팅중인 상태인지 체크
-                if (checkChatting == 0) {
+                if (checkConnecting == 0) {
 
 
                     new Thread(new Runnable() {
@@ -173,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                                     chattingStringBuilder.append(tmp + "\n");
                                     chatLog.setText(chattingStringBuilder);
                                     startBtn.setText("연결 종료");
-                                    checkChatting = 1;
+                                    checkConnecting = 1;
                                     chattingStringBuilder.append("연결 성공");
                                 }
                             } catch (Exception e) {
@@ -193,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // 채팅내역 저장 메소드 실행
                         saveChatLog(String.valueOf(chattingStringBuilder));
-                        checkChatting = 0;
+                        checkConnecting = 0;
                         chattingStringBuilder.append("연결 실패");
                    } catch (IOException e) {
                         e.printStackTrace();

@@ -19,7 +19,8 @@
     <LinearLayout
         android:layout_marginRight="80dp"
         android:layout_marginLeft="80dp"
-
+        android:orientation="vertical"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -27,15 +28,15 @@
         android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="명칭 :"
-        android:layout_marginRight="10dp"
+        android:text="명칭"
+
         android:textSize="18dp"/>
 
     <EditText
         android:id="@+id/sourceName"
         android:text=""
         android:gravity="center"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:imeOptions="actionDone"/>
