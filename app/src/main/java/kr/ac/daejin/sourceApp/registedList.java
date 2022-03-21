@@ -89,7 +89,7 @@ public class registedList extends Fragment {
         dialog_msg = customdialog.findViewById(R.id.dialog_msg);
 
         ViewGroup.LayoutParams param = dialog_msg.getLayoutParams();
-        param.width = 500;
+        param.width = 900;
         dialog_msg.setLayoutParams(param);
 
         dialog_msg.setText("동작 선택");
@@ -122,7 +122,7 @@ public class registedList extends Fragment {
                 sourceListView.setAdapter(Adapter);
 
                 // 토스트
-                Toast.makeText( getActivity().getApplicationContext(), "삭제 완", Toast.LENGTH_SHORT).show();
+                Toast.makeText( getActivity().getApplicationContext(), "삭제 완료", Toast.LENGTH_SHORT).show();
 
                 customdialog.dismiss(); // 다이얼로그 닫기
             }

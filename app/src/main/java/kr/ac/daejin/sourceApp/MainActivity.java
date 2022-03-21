@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     Button startBtn;
     Button sendBtn, customOutputBtn, registSoruceBtn,
             showSourceListBtn, showCurrentSourceListBtn, showCurrentSourceExistBtn;
+    Button tempBtn;
     TextView chatLog;
     EditText sendMsgBox;
     EditText nameBox;
@@ -37,8 +38,9 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder chattingStringBuilder;
 
     public source_class.SourceList sourceList;
-    public ArrayAdapter Adapter;
+    public ArrayAdapter Adapter, Adapter2;
     public ArrayList<String> LIST_MENU;
+    public ArrayList<String> comp_list;
 
     public InputStream inputStream;
     public OutputStream outputStream;
@@ -61,9 +63,11 @@ public class MainActivity extends AppCompatActivity {
 /////////////////////////////////////////////////////////////////////////////////////
 
         LIST_MENU = new ArrayList<String>();
+        comp_list = new ArrayList<String>();
 
         // Adapter로 registedList에 전달, ListView 설정
         Adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU) ;
+        Adapter2 = new ArrayAdapter(this, android.R.layout.simple_list_item_1, comp_list) ;
 
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -77,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         showSourceListBtn = (Button) findViewById(R.id.showSourceListBtn);
         showCurrentSourceExistBtn = (Button) findViewById(R.id.showCurrentSourceExistBtn);
         showCurrentSourceListBtn = (Button) findViewById(R.id.showCurrentSourceListBtn);
+
+        tempBtn = (Button) findViewById(R.id.tempBtn);
 
         showSourceListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,11 +143,19 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), customOutput.class);
                 startActivity(intent);
 
-                for (int i = 0; i < sourceList.getSourceList().size(); i++) {
-                    System.out.println(sourceList.getSourceList().get(i).getInfo());
-                }
             }
         });
+
+        tempBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), tempClass.class);
+                startActivity(intent);
+
+            }
+        });
+
+
 
         registSoruceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,6 +207,9 @@ public class MainActivity extends AppCompatActivity {
                                 socket = new Socket("192.168.0.17", 8080);
                                 inputStream = socket.getInputStream();
                                 outputStream = socket.getOutputStream();
+                                checkConnecting = 1;
+                                startBtn.setText("연결 종료");
+                                chattingStringBuilder.append("연결 성공");
                             } catch (IOException e) {
                                 e.printStackTrace();
                                 chattingStringBuilder.append("연결 실패");
@@ -220,17 +237,14 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 // 인터럽트가 걸리지 않았을 때 계속 수신
                                 while (!Thread.currentThread().isInterrupted()) {
-                                    Toast.makeText(MainActivity.this, "연결 시도 중...", Toast.LENGTH_SHORT).show();
-                                    Log.d(TAG, "수신 대기");
+                                    Log.d(TAG, "수신 중");
                                     bytes = inputStream.read(buffer);
                                     String tmp = new String(buffer, 0, bytes);
                                     Log.d(TAG, tmp);
                                     // TextView에 inputStream 내용 이어붙힘
                                     chattingStringBuilder.append(tmp + "\n");
                                     chatLog.setText(chattingStringBuilder);
-                                    startBtn.setText("연결 종료");
-                                    checkConnecting = 1;
-                                    chattingStringBuilder.append("연결 성공");
+
                                 }
                             } catch (Exception e) {
                                 chattingStringBuilder.append("연결 실패");

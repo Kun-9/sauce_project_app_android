@@ -6,7 +6,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "kr.ac.daejin.socketchat"
+        applicationId "kr.ac.daejin.SourceProjectApp"
         minSdk 23
         targetSdk 31
         versionCode 1

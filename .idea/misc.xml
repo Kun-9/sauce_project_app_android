@@ -14,8 +14,10 @@
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.26902173913043476" />
         <entry key="app/src/main/res/layout/custom_dialog_textinput.xml" value="0.36322188449848025" />
         <entry key="app/src/main/res/layout/custom_output_page.xml" value="0.41408664577776627" />
+        <entry key="app/src/main/res/layout/source_comp_list.xml" value="0.30570652173913043" />
         <entry key="app/src/main/res/layout/source_regist_page.xml" value="0.45" />
         <entry key="app/src/main/res/layout/source_registed_list_page.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/source_view_card.xml" value="0.375" />
         <entry key="app/src/main/res/layout/tab_layout.xml" value="0.55" />
         <entry key="app/src/main/res/layout/tab_layout2.xml" value="0.2801418439716312" />
       </map>

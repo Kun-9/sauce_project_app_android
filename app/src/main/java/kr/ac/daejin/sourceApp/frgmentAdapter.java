@@ -18,9 +18,11 @@ class fragmentAdapter extends FragmentPagerAdapter {
         items = new ArrayList<Fragment>();
         items.add(new registSource());
         items.add(new registedList());
+        items.add(new source_comp_list());
 
         text.add("소스 등록");
         text.add("소스 목록");
+        text.add("저장 조합");
     }
 
     @NonNull

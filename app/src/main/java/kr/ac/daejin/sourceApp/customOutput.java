@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 
 public class customOutput extends AppCompatActivity {
@@ -28,6 +29,8 @@ public class customOutput extends AppCompatActivity {
     EditText[] cart;
     TextView[] cartName;
     source_class.SourceList sourceList;
+    ArrayList<String> comp_list;
+
     OutputStream outputStream;
     int checkConnecting;
 
@@ -42,6 +45,7 @@ public class customOutput extends AppCompatActivity {
         dialog_msg = customdialog.findViewById(R.id.dialog_msg);
 
 
+        comp_list = ((MainActivity) MainActivity.context_main).comp_list;
         checkConnecting = ((MainActivity) MainActivity.context_main).checkConnecting;
         sourceList = ((MainActivity) MainActivity.context_main).sourceList;
         outputStream = ((MainActivity) MainActivity.context_main).outputStream;
@@ -82,12 +86,16 @@ public class customOutput extends AppCompatActivity {
             }
         });
 
+        // 조합 저장 버튼 클릭
         saveSourceCompBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String sendStr = getOutputString(cart, sourceList);
+                comp_list.add(sendStr);
             }
         });
+
+
 
     }
 
