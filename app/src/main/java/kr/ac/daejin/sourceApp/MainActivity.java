@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<String> LIST_MENU;
     public ArrayList<String> comp_list;
 
+
     public InputStream inputStream;
     public OutputStream outputStream;
 

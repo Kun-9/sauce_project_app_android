@@ -39,9 +39,20 @@ public class source_comp_list extends Fragment {
         sourceListView = (ListView) rootView.findViewById(R.id.comp_listView);
         sourceListView.setAdapter(Adapter);
 
-
+        //리스트 뷰 클릭시 동작
+//        sourceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int select, long id) {
+//                position = select;
+//                registCompDialog();
+//            }
+//        });
 
 
         return rootView;
     }
+
+
+
+
 }

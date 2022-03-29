@@ -90,8 +90,7 @@ public class customOutput extends AppCompatActivity {
         saveSourceCompBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String sendStr = getOutputString(cart, sourceList);
-                comp_list.add(sendStr);
+                registCompDialog();
             }
         });
 
@@ -103,12 +102,6 @@ public class customOutput extends AppCompatActivity {
 //        dialog_msg.setText("소스를 출력 하시겠습니까?");
         customdialog.show();
         customdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); // 투명 배경
-        /* 이 함수 안에 원하는 디자인과 기능을 구현하면 된다. */
-
-        // 위젯 연결 방식은 각자 취향대로~
-        // '아래 아니오 버튼'처럼 일반적인 방법대로 연결하면 재사용에 용이하고,
-        // '아래 네 버튼'처럼 바로 연결하면 일회성으로 사용하기 편함.
-        // *주의할 점: findViewById()를 쓸 때는 -> 앞에 반드시 다이얼로그 이름을 붙여야 한다.
 
         // 아니오 버튼
         Button noBtn = customdialog.findViewById(R.id.noBtn);
@@ -182,5 +175,78 @@ public class customOutput extends AppCompatActivity {
         sendStr.append(num).append(",").append(cartNum).append(",").append(weight).append(",").append(isLiquid);
         return sendStr.toString();
     }
+
+    public void registCompDialog() {
+        customdialog = new Dialog(this);
+        customdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        customdialog.setContentView(R.layout.custom_dialog_textinput);
+        EditText cartNumDialogInput = customdialog.findViewById(R.id.cartNumDialogInput);
+        customdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); // 투명 배경
+
+        dialog_msg = customdialog.findViewById(R.id.dialog_msg);
+        dialog_msg.setText("이름 설정");
+
+        customdialog.show();
+
+
+        // 아니오 버튼
+        Button noBtn = customdialog.findViewById(R.id.noBtn);
+        noBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customdialog.dismiss(); // 다이얼로그 닫기
+            }
+        });
+        // 네 버튼
+        customdialog.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customdialog.dismiss(); // 다이얼로그 닫기
+
+                String name = cartNumDialogInput.getText().toString();
+
+                String sendStr = getOutputString(cart, sourceList);
+                String nameInfo = name + " " + sendStr;
+                comp_list.add(nameInfo);
+
+            }
+        });
+    }
+//
+//    public void getNameDialog(int num) {
+//        customdialog = new Dialog(getActivity());
+//        customdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        customdialog.setContentView(R.layout.custom_dialog);
+//        dialog_msg = customdialog.findViewById(R.id.dialog_msg);
+//        dialog_msg.setText("등록된 소스를 삭제하고 진행하시겠습니까?");
+//        customdialog.show();
+//        customdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); // 투명 배경
+//
+//
+//        // 아니오 버튼
+//        Button noBtn = customdialog.findViewById(R.id.noBtn);
+//        noBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 원하는 기능 구현
+//                customdialog.dismiss(); // 다이얼로그 닫기
+//            }
+//        });
+//        // 네 버튼
+//        customdialog.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 원하는 기능 구현
+//                sourceList.regist_current_source(num, position);
+//                String str = num + 1 + "번 카트리지에 등록되었습니다.";
+//                Toast.makeText(getActivity().getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+//
+//                // 토스트
+//                Toast.makeText( getActivity().getApplicationContext(), "등록 완료", Toast.LENGTH_SHORT).show();
+//
+//                customdialog.dismiss(); // 다이얼로그 닫기
+//            }
+//        });
+//    }
 
 }
