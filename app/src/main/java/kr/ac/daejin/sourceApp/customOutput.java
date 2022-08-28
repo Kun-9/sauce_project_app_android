@@ -209,44 +209,8 @@ public class customOutput extends AppCompatActivity {
                 String nameInfo = name + " " + sendStr;
                 comp_list.add(nameInfo);
 
+                Toast.makeText(getApplicationContext(), "등록 완료", Toast.LENGTH_SHORT).show();
             }
         });
     }
-//
-//    public void getNameDialog(int num) {
-//        customdialog = new Dialog(getActivity());
-//        customdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        customdialog.setContentView(R.layout.custom_dialog);
-//        dialog_msg = customdialog.findViewById(R.id.dialog_msg);
-//        dialog_msg.setText("등록된 소스를 삭제하고 진행하시겠습니까?");
-//        customdialog.show();
-//        customdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); // 투명 배경
-//
-//
-//        // 아니오 버튼
-//        Button noBtn = customdialog.findViewById(R.id.noBtn);
-//        noBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // 원하는 기능 구현
-//                customdialog.dismiss(); // 다이얼로그 닫기
-//            }
-//        });
-//        // 네 버튼
-//        customdialog.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // 원하는 기능 구현
-//                sourceList.regist_current_source(num, position);
-//                String str = num + 1 + "번 카트리지에 등록되었습니다.";
-//                Toast.makeText(getActivity().getApplicationContext(), str, Toast.LENGTH_SHORT).show();
-//
-//                // 토스트
-//                Toast.makeText( getActivity().getApplicationContext(), "등록 완료", Toast.LENGTH_SHORT).show();
-//
-//                customdialog.dismiss(); // 다이얼로그 닫기
-//            }
-//        });
-//    }
-
 }

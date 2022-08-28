@@ -14,14 +14,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,15 +97,17 @@ public class MainActivity extends AppCompatActivity {
         showSourceListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 ArrayList<source_class.Source> sources = sourceList.getSourceList();
                 int size = sources.size();
 
                 StringBuilder sb = new StringBuilder();
+                String info = getCurrentSauceInfo();
+//                sb.append(info).append("\n");
 
-                for (int i = 0; i < size ; i++) {
-                    sb.append("[ ").append(sources.get(i).getName()).append(", ").append(sources.get(i).getIsLiquid()).append(" ] ");
-                }
-                chattingStringBuilder.append("등록된 소스 리스트 :\n");
+                sb.append(parseSauceJson(info));
+
+                chattingStringBuilder.append("저장된 데이터 :\n");
                 chattingStringBuilder.append(sb).append("\n");
                 chatLog.setText(chattingStringBuilder);
             }
@@ -175,34 +186,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-//        cart1 = (EditText) findViewById(R.id.cart1);
-//        cart2 = (EditText) findViewById(R.id.cart2);
-//        cart3 = (EditText) findViewById(R.id.cart3);
-//        cart4 = (EditText) findViewById(R.id.cart4);
-//        cart5 = (EditText) findViewById(R.id.cart5);
-//        cart6 = (EditText) findViewById(R.id.cart6);
-
-
-        // 채팅 내역 textView 스크롤 구현
+        // 로 textView 스크롤 구현
         chatLog.setMovementMethod(new ScrollingMovementMethod());
 
-        // 채팅 내역
+        // 로그
         chattingStringBuilder = new StringBuilder();
 
-        // CHAT START 버튼을 눌렀을 때
+        // 연결 버튼을 눌렀을 때
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "수신 시작");
                 chattingStringBuilder.append("연결 시작");
-                // 현재 채팅중인 상태인지 체크
+                // 현재 연결중인 상태인지 체크
                 if (checkConnecting == 0) {
-
-
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-
                             try {
                                 // 소켓 연결
                                 socket = new Socket("192.168.0.17", 8080);
@@ -210,10 +210,10 @@ public class MainActivity extends AppCompatActivity {
                                 outputStream = socket.getOutputStream();
                                 checkConnecting = 1;
                                 startBtn.setText("연결 종료");
-                                chattingStringBuilder.append("연결 성공");
+                                chattingStringBuilder.append("연결 성공\n");
                             } catch (IOException e) {
                                 e.printStackTrace();
-                                chattingStringBuilder.append("연결 실패");
+                                chattingStringBuilder.append("연결 실패\n");
                             }
                             byte[] buffer = new byte[1024];
                             int bytes;
@@ -242,13 +242,34 @@ public class MainActivity extends AppCompatActivity {
                                     bytes = inputStream.read(buffer);
                                     String tmp = new String(buffer, 0, bytes);
                                     Log.d(TAG, tmp);
+
+                                    JsonParser jsonParser = new JsonParser();
+                                    JsonElement jsonElement = jsonParser.parse(tmp);
+
+                                    JsonObject jsonObject = jsonElement.getAsJsonObject();
+                                    String messageType = jsonObject.get("messageType").getAsString();
+                                    JsonArray body = jsonObject.get("body").getAsJsonArray();
+
+                                    // 만약 메시지 타입이 2라면? (소스 스캔 json 배열)
+                                    if (messageType.equals("2")) {
+                                        for (JsonElement sauce : body) {
+                                            JsonObject JsonObject = sauce.getAsJsonObject();
+                                            String id = JsonObject.get("id").getAsString();
+                                            String name = JsonObject.get("name").getAsString();
+                                            String isLiquid = JsonObject.get("isLiquid").getAsString();
+                                            Log.d(TAG, "id = " + id + " name = " + name + " isLiquid = " + isLiquid);
+                                        }
+                                        // json 배열 저장
+                                        saveSauceList(body.toString());
+                                    }
+
                                     // TextView에 inputStream 내용 이어붙힘
                                     chattingStringBuilder.append(tmp + "\n");
                                     chatLog.setText(chattingStringBuilder);
 
                                 }
                             } catch (Exception e) {
-                                chattingStringBuilder.append("연결 실패");
+                                chattingStringBuilder.append("연결 실패\n");
                                 Log.d(TAG, "수신 종료");
                             }
                         }
@@ -265,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
                         // 채팅내역 저장 메소드 실행
                         saveChatLog(String.valueOf(chattingStringBuilder));
                         checkConnecting = 0;
-                        chattingStringBuilder.append("연결 실패");
+                        chattingStringBuilder.append("연결 실패\n");
                    } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -308,9 +329,6 @@ public class MainActivity extends AppCompatActivity {
                 }).start();
             }
         });
-
-
-
     }
 
     // 채팅 로그 저장 메소드
@@ -342,7 +360,147 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // json 저장 메소드
+    public void saveSauceList(String str) {
+
+        // 현재 절대경로 값 path에 할당
+        String path = getFilesDir().getAbsolutePath();
+
+        // 절대경로에 chatLog.txt 라는 파일로 저장
+        File file = new File(path + "/currentSauceList.json");
+
+        // 저장경로 로그로 확인
+        Log.d(TAG, "path = " + path);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+
+            // 입력받은 str값을 txt파일에 입력
+            fos.write(str.getBytes());
+            fos.close();
+            Log.d(TAG, "저장 완료");
+
+        } catch (IOException e) {
+            Log.d(TAG, "저장 실패");
+            Toast toast = Toast.makeText(getApplicationContext(), "저장 성공", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+
+    public String getCurrentSauceInfo() {
+        // 현재 절대경로 값 path에 할당
+        String path = getFilesDir().getAbsolutePath();
+        StringBuilder sb = new StringBuilder();
+
+        File file = new File(path + "/currentSauceList.json");
+
+        // 저장경로 로그로 확인
+        Log.d(TAG, "path = " + path);
+        try {
+            FileInputStream fos = new FileInputStream(file);
+            InputStreamReader isr = new InputStreamReader(fos);
+            //입출력 속도 상승을 위해 사용
+            BufferedReader bufferedReader = new BufferedReader(isr);
+
+            String line;
+            //ufferedReader.readLine()은 Stream에서 한줄을 읽어 반환한다.
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+
+            fos.close();
+            Log.d(TAG, "저장 완료");
+
+            return sb.toString();
+
+        } catch (IOException e) {
+            Log.d(TAG, "저장 실패");
+            return null;
+        }
+
+    }
+
+    public String parseSauceJson(String json) {
+        StringBuilder sb = new StringBuilder();
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElement = jsonParser.parse(json);
+
+        JsonArray data = jsonElement.getAsJsonArray();
+
+        for (JsonElement sauce : data) {
+            JsonObject JsonObject = sauce.getAsJsonObject();
+            String id = JsonObject.get("id").getAsString();
+            String name = JsonObject.get("name").getAsString();
+            String isLiquid = JsonObject.get("isLiquid").getAsString();
+            sb.append("id = " + id + " name = " + name + " isLiquid = " + isLiquid).append("\n");
+            System.out.println("id = " + id + " name = " + name + " isLiquid = " + isLiquid);
+        }
+        return sb.toString();
+    }
+
+//    private String getJsonString()
+//    {
+//        String json = "";
+//
+//        try {
+//            InputStream is = getAssets().open("Movies.json");
+//            int fileSize = is.available();
+//
+//            byte[] buffer = new byte[fileSize];
+//            is.read(buffer);
+//            is.close();
+//
+//            json = new String(buffer, "UTF-8");
+//        }
+//        catch (IOException ex)
+//        {
+//            ex.printStackTrace();
+//        }
+//
+//        return json;
+//    }
 }
+class Sauce {
+
+    private List<SauceInfo> body;
+
+    public Sauce(List<SauceInfo> body) {
+        this.body = body;
+    }
+
+    @Override
+    public String toString() {
+        return "Sauce{" +
+                "body=" + body +
+                '}';
+    }
+
+    public List getBody() {
+        return this.body;
+    }
+
+    class SauceInfo {
+        private String name;
+        private int isLiquid;
+        private int id;
+
+        public SauceInfo(String name, int isLiquid, int id) {
+            this.name = name;
+            this.isLiquid = isLiquid;
+            this.id = id;
+        }
+
+        @Override
+        public String toString() {
+            return "SauceInfo{" +
+                    "name='" + name + '\'' +
+                    ", isLiquid=" + isLiquid +
+                    ", id=" + id +
+                    '}';
+        }
+    }
+}
+
 
 
 

@@ -32,8 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:fontFamily="@font/regular"
+                android:gravity="center"
                 android:text="연결" />
 
             <LinearLayout
@@ -45,25 +45,24 @@
 
 
                 <Button
-                    android:fontFamily="@font/midium"
                     android:id="@+id/customOutputBtn"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/midium"
                     android:text="커스텀 출력" />
 
                 <Button
-                    android:fontFamily="@font/midium"
                     android:id="@+id/registSoruceBtn"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/midium"
                     android:text="소스 등록" />
 
             </LinearLayout>
-
 
 
             <LinearLayout
@@ -90,6 +89,7 @@
                     android:textSize="15sp" />
 
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -145,36 +145,36 @@
                 android:layout_height="60dp">
 
                 <Button
-                    android:fontFamily="@font/regular"
-                    android:backgroundTint="#707070"
                     android:id="@+id/showSourceListBtn"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
+                    android:backgroundTint="#707070"
+                    android:fontFamily="@font/regular"
 
                     android:text="현재 소스 \n리스트 조회"
                     android:textSize="9sp" />
 
                 <Button
-                    android:fontFamily="@font/regular"
                     android:id="@+id/showCurrentSourceListBtn"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="#707070"
+                    android:fontFamily="@font/regular"
                     android:text="현재 카트리지 \n소스 리스트 조회"
                     android:textSize="9sp" />
 
                 <Button
-                    android:fontFamily="@font/regular"
                     android:id="@+id/showCurrentSourceExistBtn"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="#707070"
+                    android:fontFamily="@font/regular"
                     android:text="현재 카트리지 \n소스 여부 조회"
                     android:textSize="9sp" />
 
@@ -182,10 +182,10 @@
             </LinearLayout>
 
             <Button
-                android:fontFamily="@font/midium"
                 android:id="@+id/tempBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/midium"
                 android:text="temp" />
 
             <TextView
@@ -207,31 +207,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
+        android:layout_marginStart="5dp"
 
-        android:background="@android:color/darker_gray">
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@android:color/darker_gray"
+        android:orientation="horizontal">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="60"
-            android:editable="true"
-            android:text=""
-            tools:ignore="Deprecated"
-            android:layout_margin="5dp"
-            android:id="@+id/sendMsgBox" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="60"
+                    android:editable="true"
+                    android:text=""
+                    tools:ignore="Deprecated"
+                    android:layout_margin="5dp"
+                    android:id="@+id/sendMsgBox" />
 
-        <Button
-            android:id="@+id/sendBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="출력"
-            android:layout_margin="5dp"
-            android:textSize="12dp" />
+                <Button
+                    android:id="@+id/sendBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="출력"
+                    android:layout_margin="5dp"
+                    android:textSize="12dp" />
 
     </LinearLayout>
 </RelativeLayout>
