@@ -19,22 +19,20 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public static Context context_main;
+
+
 
     Button startBtn;
     Button sendBtn, customOutputBtn, registSoruceBtn,
@@ -47,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder chattingStringBuilder;
 
     public source_class.SourceList sourceList;
+    public SauceListManager.SauceList sauceList;
     public ArrayAdapter Adapter, Adapter2;
     public ArrayList<String> LIST_MENU;
     public ArrayList<String> comp_list;
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         context_main = this;
         sourceList = new source_class.SourceList();
-
+        sauceList = new SauceListManager.SauceList();
 
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -94,18 +93,34 @@ public class MainActivity extends AppCompatActivity {
 
         tempBtn = (Button) findViewById(R.id.tempBtn);
 
+        SauceParse sauceParse = new SauceParse();
+
+        try {
+            File dir = new File("/data/data/kr.ac.daejin.SourceProjectApp/files");
+            File file = new File(dir + "/currentSauceList.json");
+
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+//         현재 소스 업데이트
+//        sauceList.updateSauceList();
+
         showSourceListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                ArrayList<source_class.Source> sources = sourceList.getSourceList();
-                int size = sources.size();
-
                 StringBuilder sb = new StringBuilder();
-                String info = getCurrentSauceInfo();
-//                sb.append(info).append("\n");
+                String info = sauceParse.getCurrentSauceInfo();
 
-                sb.append(parseSauceJson(info));
+                sb.append(sauceParse.parseSauceJson(info));
 
                 chattingStringBuilder.append("저장된 데이터 :\n");
                 chattingStringBuilder.append(sb).append("\n");
@@ -116,17 +131,14 @@ public class MainActivity extends AppCompatActivity {
         showCurrentSourceListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                source_class.Source[] currentSourceList = sourceList.getCurrentSourceList();
-                StringBuilder sb = new StringBuilder();
 
-                for (int i = 0; i < 6 ; i++) {
-                    if (currentSourceList[i] != null) {
-                        sb.append("[ ").append(currentSourceList[i].getName()).append(", ").append(currentSourceList[i].getIsLiquid()).append(" ] ");
-                    } else {
-                        sb.append("[ " + "null" + " ] ");
-                    }
+                StringBuilder sb = new StringBuilder();
+                sauceList.updateSauceList();
+                for (int i = 0; i < 6; i++) {
+                    sb.append(sauceList.getSauceList().get(i)).append("\n");
                 }
-                chattingStringBuilder.append("카트리지 소스 리스트 :\n");
+
+                chattingStringBuilder.append("카트리지 소스 객체 :\n");
                 chattingStringBuilder.append(sb).append("\n");
                 chatLog.setText(chattingStringBuilder);
             }
@@ -135,16 +147,28 @@ public class MainActivity extends AppCompatActivity {
         showCurrentSourceExistBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int[] currentSourceExist = sourceList.getCurrentSourceExist();
 
-                StringBuilder sb = new StringBuilder();
+                if (checkConnecting == 1) {
+                    // 새로운 쓰레드 생성
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                for (int i = 0; i < 6 ; i++) {
-                    sb.append("[ ").append(currentSourceExist[i]).append(" ] ");
+                            byte[] buffer = new byte[1024];
+                            try {
+                                // 입력값 전송
+                                buffer = "7{\"name\" : \"간장\", \"isLiquid\" : \"1\", \"id\" : \"2277814929\"}".getBytes(StandardCharsets.UTF_8);
+                                outputStream.write(buffer);
+                                outputStream.flush();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                    Toast.makeText(getApplicationContext(), "전송 성공", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "기기와 연결중이 아닙니다.", Toast.LENGTH_SHORT).show();
                 }
-                chattingStringBuilder.append("카트리지 등록 여부 :\n");
-                chattingStringBuilder.append(sb).append("\n");
-                chatLog.setText(chattingStringBuilder);
             }
         });
 
@@ -161,8 +185,29 @@ public class MainActivity extends AppCompatActivity {
         tempBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), tempClass.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), tempClass.class);
+//                startActivity(intent);
+                if (checkConnecting == 1) {
+                    // 새로운 쓰레드 생성
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            byte[] buffer = new byte[1024];
+                            try {
+                                // 입력값 전송
+                                buffer = "0".getBytes(StandardCharsets.UTF_8);
+                                outputStream.write(buffer);
+                                outputStream.flush();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                    Toast.makeText(getApplicationContext(), "전송 성공", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "기기와 연결중이 아닙니다.", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -252,15 +297,16 @@ public class MainActivity extends AppCompatActivity {
 
                                     // 만약 메시지 타입이 2라면? (소스 스캔 json 배열)
                                     if (messageType.equals("2")) {
-                                        for (JsonElement sauce : body) {
-                                            JsonObject JsonObject = sauce.getAsJsonObject();
-                                            String id = JsonObject.get("id").getAsString();
-                                            String name = JsonObject.get("name").getAsString();
-                                            String isLiquid = JsonObject.get("isLiquid").getAsString();
-                                            Log.d(TAG, "id = " + id + " name = " + name + " isLiquid = " + isLiquid);
-                                        }
+//                                        for (JsonElement sauce : body) {
+//                                            JsonObject JsonObject = sauce.getAsJsonObject();
+//                                            String id = JsonObject.get("id").getAsString();
+//                                            String name = JsonObject.get("name").getAsString();
+//                                            String isLiquid = JsonObject.get("isLiquid").getAsString();
+//                                            Log.d(TAG, "id = " + id + " name = " + name + " isLiquid = " + isLiquid);
+//                                        }
                                         // json 배열 저장
-                                        saveSauceList(body.toString());
+                                        sauceParse.saveSauceList(body.toString());
+                                        sauceList.updateSauceList();
                                     }
 
                                     // TextView에 inputStream 내용 이어붙힘
@@ -360,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // json 저장 메소드
+//    // json 저장 메소드
     public void saveSauceList(String str) {
 
         // 현재 절대경로 값 path에 할당
@@ -385,122 +431,58 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
         }
     }
-
-
-    public String getCurrentSauceInfo() {
-        // 현재 절대경로 값 path에 할당
-        String path = getFilesDir().getAbsolutePath();
-        StringBuilder sb = new StringBuilder();
-
-        File file = new File(path + "/currentSauceList.json");
-
-        // 저장경로 로그로 확인
-        Log.d(TAG, "path = " + path);
-        try {
-            FileInputStream fos = new FileInputStream(file);
-            InputStreamReader isr = new InputStreamReader(fos);
-            //입출력 속도 상승을 위해 사용
-            BufferedReader bufferedReader = new BufferedReader(isr);
-
-            String line;
-            //ufferedReader.readLine()은 Stream에서 한줄을 읽어 반환한다.
-            while ((line = bufferedReader.readLine()) != null) {
-                sb.append(line);
-            }
-
-            fos.close();
-            Log.d(TAG, "저장 완료");
-
-            return sb.toString();
-
-        } catch (IOException e) {
-            Log.d(TAG, "저장 실패");
-            return null;
-        }
-
-    }
-
-    public String parseSauceJson(String json) {
-        StringBuilder sb = new StringBuilder();
-        JsonParser jsonParser = new JsonParser();
-        JsonElement jsonElement = jsonParser.parse(json);
-
-        JsonArray data = jsonElement.getAsJsonArray();
-
-        for (JsonElement sauce : data) {
-            JsonObject JsonObject = sauce.getAsJsonObject();
-            String id = JsonObject.get("id").getAsString();
-            String name = JsonObject.get("name").getAsString();
-            String isLiquid = JsonObject.get("isLiquid").getAsString();
-            sb.append("id = " + id + " name = " + name + " isLiquid = " + isLiquid).append("\n");
-            System.out.println("id = " + id + " name = " + name + " isLiquid = " + isLiquid);
-        }
-        return sb.toString();
-    }
-
-//    private String getJsonString()
-//    {
-//        String json = "";
 //
+//
+//    public String getCurrentSauceInfo() {
+//        // 현재 절대경로 값 path에 할당
+//        String path = getFilesDir().getAbsolutePath();
+//        StringBuilder sb = new StringBuilder();
+//
+//        File file = new File(path + "/currentSauceList.json");
+//
+//        // 저장경로 로그로 확인
+//        Log.d(TAG, "path = " + path);
 //        try {
-//            InputStream is = getAssets().open("Movies.json");
-//            int fileSize = is.available();
+//            FileInputStream fos = new FileInputStream(file);
+//            InputStreamReader isr = new InputStreamReader(fos);
+//            BufferedReader bufferedReader = new BufferedReader(isr);
 //
-//            byte[] buffer = new byte[fileSize];
-//            is.read(buffer);
-//            is.close();
+//            String line;
+//            while ((line = bufferedReader.readLine()) != null) {
+//                sb.append(line);
+//            }
 //
-//            json = new String(buffer, "UTF-8");
+//            fos.close();
+//            Log.d(TAG, "읽기 완료");
+//
+//            return sb.toString();
+//
+//        } catch (IOException e) {
+//            Log.d(TAG, "읽 실패");
+//            return null;
 //        }
-//        catch (IOException ex)
-//        {
-//            ex.printStackTrace();
-//        }
 //
-//        return json;
 //    }
+//
+//    public String parseSauceJson(String json) {
+//        StringBuilder sb = new StringBuilder();
+//        JsonParser jsonParser = new JsonParser();
+//        JsonElement jsonElement = jsonParser.parse(json);
+//
+//        JsonArray data = jsonElement.getAsJsonArray();
+//
+//        for (JsonElement sauce : data) {
+//            JsonObject JsonObject = sauce.getAsJsonObject();
+//            String id = JsonObject.get("id").getAsString();
+//            String name = JsonObject.get("name").getAsString();
+//            String isLiquid = JsonObject.get("isLiquid").getAsString();
+//            sb.append("id = " + id + " name = " + name + " isLiquid = " + isLiquid).append("\n");
+//            System.out.println("id = " + id + " name = " + name + " isLiquid = " + isLiquid);
+//        }
+//        return sb.toString();
+//    }
+
 }
-class Sauce {
-
-    private List<SauceInfo> body;
-
-    public Sauce(List<SauceInfo> body) {
-        this.body = body;
-    }
-
-    @Override
-    public String toString() {
-        return "Sauce{" +
-                "body=" + body +
-                '}';
-    }
-
-    public List getBody() {
-        return this.body;
-    }
-
-    class SauceInfo {
-        private String name;
-        private int isLiquid;
-        private int id;
-
-        public SauceInfo(String name, int isLiquid, int id) {
-            this.name = name;
-            this.isLiquid = isLiquid;
-            this.id = id;
-        }
-
-        @Override
-        public String toString() {
-            return "SauceInfo{" +
-                    "name='" + name + '\'' +
-                    ", isLiquid=" + isLiquid +
-                    ", id=" + id +
-                    '}';
-        }
-    }
-}
-
 
 
 

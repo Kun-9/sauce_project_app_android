@@ -10,6 +10,7 @@
     tools:context=".MainActivity"
     android:orientation="vertical"
     android:padding="10dp"
+
     >
 <!--    android:background="#D8D8D8"-->
 
@@ -50,7 +51,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/midium"
+                    android:fontFamily="@font/regular"
+
                     android:text="커스텀 출력" />
 
                 <Button
@@ -59,7 +61,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/midium"
+                    android:fontFamily="@font/regular"
                     android:text="소스 등록" />
 
             </LinearLayout>
@@ -164,6 +166,7 @@
                     android:layout_weight="1"
                     android:backgroundTint="#707070"
                     android:fontFamily="@font/regular"
+
                     android:text="현재 카트리지 \n소스 리스트 조회"
                     android:textSize="9sp" />
 
@@ -174,7 +177,6 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="#707070"
-                    android:fontFamily="@font/regular"
                     android:text="현재 카트리지 \n소스 여부 조회"
                     android:textSize="9sp" />
 
@@ -185,7 +187,6 @@
                 android:id="@+id/tempBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/midium"
                 android:text="temp" />
 
             <TextView

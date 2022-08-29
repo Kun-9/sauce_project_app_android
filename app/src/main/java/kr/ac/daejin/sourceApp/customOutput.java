@@ -29,6 +29,7 @@ public class customOutput extends AppCompatActivity {
     EditText[] cart;
     TextView[] cartName;
     source_class.SourceList sourceList;
+    SauceListManager.SauceList sauceList;
     ArrayList<String> comp_list;
 
     OutputStream outputStream;
@@ -48,6 +49,7 @@ public class customOutput extends AppCompatActivity {
         comp_list = ((MainActivity) MainActivity.context_main).comp_list;
         checkConnecting = ((MainActivity) MainActivity.context_main).checkConnecting;
         sourceList = ((MainActivity) MainActivity.context_main).sourceList;
+        sauceList = ((MainActivity) MainActivity.context_main).sauceList;
         outputStream = ((MainActivity) MainActivity.context_main).outputStream;
 
         cart = new EditText[6];
@@ -71,12 +73,20 @@ public class customOutput extends AppCompatActivity {
         saveSourceCompBtn = (Button) findViewById(R.id.saveSourceCompBtn);
 
         for (int i = 0; i < 6; i++) {
-            if (sourceList.getCurrentSourceExist()[i] != 0) {
-                cartName[i].setText(sourceList.getCurrentSourceList()[i].getName());
-            } else {
+            if (sauceList.getSauceList().get(i).getId().equals("null")) {
                 cartName[i].setText("X");
+            } else {
+                cartName[i].setText(sauceList.getSauceList().get(i).getName());
+//                cartName[i].setText("exist");
             }
         }
+
+//        for (int i = 0; i < 6; i++) {
+//            String name = sauceList.getSauceList().get(0).getName();
+//            cartName[i].setText(name);
+//
+//        }
+
 
         customOutputSendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +168,8 @@ public class customOutput extends AppCompatActivity {
         StringBuilder sendStr = new StringBuilder();
 
         for (int i = 0; i < 6; i++) {
-            if (cart[i] != null && sourceList.getCurrentSourceExist()[i] == 1) {
+            SauceListManager.Sauce sauce = sauceList.getSauceList().get(i);
+            if (!sauce.getId().equals("null")) {
                 // 카트리지 번호
                 cartNum.append(i + 1).append(" ");
 
@@ -166,7 +177,7 @@ public class customOutput extends AppCompatActivity {
                 weight.append(cart[i].getText().toString()).append(" ");
 
                 // 액체 구분
-                isLiquid.append(sourceList.getCurrentSourceList()[i].getIsLiquid()).append(" ");
+                isLiquid.append(sauce.getIsLiquid()).append(" ");
 
                 // 출력 소스 갯수
                 num++;
@@ -213,4 +224,29 @@ public class customOutput extends AppCompatActivity {
             }
         });
     }
+
+    public void editSauce(String name, String isLiquid, String id) {
+        if (checkConnecting == 1) {
+            // 새로운 쓰레드 생성
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    byte[] buffer = new byte[1024];
+                    try {
+                        // 입력값 전송
+                        buffer = "7{\"name\" : \"간장\", \"isLiquid\" : \"1\", \"id\" : \"2277814929\"}".getBytes(StandardCharsets.UTF_8);
+                        outputStream.write(buffer);
+                        outputStream.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+            Toast.makeText(getApplicationContext(), "전송 성공", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "기기와 연결중이 아닙니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
