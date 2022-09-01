@@ -1,4 +1,4 @@
-package kr.ac.daejin.sourceApp;
+package kr.ac.daejin.sauceApp;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -21,39 +21,45 @@ public class SauceListManager {
             this.sauceParse = new SauceParse();
             sauceList = new ArrayList<>();
 
-            String json = sauceParse.getCurrentSauceInfo();
+            String json = sauceParse.getCurrentSauceInfo(this);
 
-            if (json == null) {
-                for (int i = 0; i < 6; i++) {
-                    this.sauceList.add(new Sauce("null", "null", "null"));
+            try {
+                if (json == null) {
+                    for (int i = 0; i < 6; i++) {
+                        this.sauceList.add(new Sauce("null", "null", "null"));
+                    }
+                    Gson gson = new Gson();
+                    String s = gson.toJson(sauceList);
+                    System.out.println("s = " + s);
+                    sauceParse.saveSauceList(s);
+
+                } else {
+                    JsonParser jsonParser = new JsonParser();
+                    JsonElement jsonElement = jsonParser.parse(json);
+
+                    JsonArray data = jsonElement.getAsJsonArray();
+
+                    for (JsonElement sauce : data) {
+                        JsonObject JsonObject = sauce.getAsJsonObject();
+                        String id = JsonObject.get("id").getAsString();
+                        String name = JsonObject.get("name").getAsString();
+                        String isLiquid = JsonObject.get("isLiquid").getAsString();
+
+                        this.sauceList.add(new Sauce(name, isLiquid, id));
+                    }
                 }
-                Gson gson = new Gson();
-                String s = gson.toJson(sauceList);
-                System.out.println("s = " + s);
-                sauceParse.saveSauceList(s);
 
-            } else {
-                JsonParser jsonParser = new JsonParser();
-                JsonElement jsonElement = jsonParser.parse(json);
-
-                JsonArray data = jsonElement.getAsJsonArray();
-
-                for (JsonElement sauce : data) {
-                    JsonObject JsonObject = sauce.getAsJsonObject();
-                    String id = JsonObject.get("id").getAsString();
-                    String name = JsonObject.get("name").getAsString();
-                    String isLiquid = JsonObject.get("isLiquid").getAsString();
-
-                    this.sauceList.add(new Sauce(name, isLiquid, id));
-                }
+            } catch (Exception e) {
+                sauceParse.deleteJson();
             }
+
 
         }
 
         // 소스 리스트 json을 기반으로 sauceList객체에 등록시킴
         public void updateSauceList() {
 
-            String json = sauceParse.getCurrentSauceInfo();
+            String json = sauceParse.getCurrentSauceInfo(this);
             if(json == null) return;
 
             JsonParser jsonParser = new JsonParser();

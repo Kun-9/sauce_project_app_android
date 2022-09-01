@@ -2,24 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
     android:orientation="vertical"
-    android:layout_gravity="center"
-    >
+    android:layout_gravity="center">
 
-    <TextView
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="커스텀 출력"
-        android:layout_margin="20dp"
-        android:textSize="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="100dp"
-        />
+        android:gravity="center"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="출력"
+            android:textAlignment="center"
+            android:layout_margin="20dp"
+            android:textSize="35dp"
+            android:paddingTop="55dp"
+            android:paddingBottom="55dp"
+            android:fontFamily="@font/bold"
+            android:textColor="@color/black"
+            />
 
 
+    </LinearLayout>
 
     <LinearLayout
         android:paddingLeft="15dp"
@@ -30,82 +40,188 @@
         android:layout_margin="0dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/cart1Name"
-            android:layout_width="40dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="없음"
-            android:textSize="14dp"
-            />
+        <androidx.cardview.widget.CardView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:cardCornerRadius="25dp"
+            android:background="@drawable/layout_selector"
+            app:cardElevation="1dp"
+            android:id="@+id/card1"
+            app:cardUseCompatPadding="true">
 
-        <TextView
-            android:id="@+id/cart2Name"
-            android:layout_width="40dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="없음"
-            android:textSize="14dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/cartridge1"
+                android:gravity="center"
+                android:padding="10dp">
 
-        <TextView
-            android:id="@+id/cart3Name"
-            android:layout_width="40dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="없음"
-            android:textSize="14dp" />
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/cart1Name"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:fontFamily="@font/bold"
+                    android:text="없음"
+                    android:textSize="14dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/cart1"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="15sp"
+                        android:singleLine="true"
+                        android:fontFamily="@font/regular"
+                        android:text="0"
+                        android:layout_marginLeft="10dp"
+                        />
+
+                    <TextView
+                        android:layout_width="10dp"
+                        android:fontFamily="@font/regular"
+                        android:layout_height="match_parent"
+                        android:text="g"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="1dp"
+            android:id="@+id/card2"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/cartridge2"
+                android:gravity="center"
+                android:background="@drawable/layout_selector"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/cart2Name"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:fontFamily="@font/bold"
+                    android:text="없음"
+                    android:textSize="14dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/cart2"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="15sp"
+                        android:singleLine="true"
+                        android:fontFamily="@font/regular"
+                        android:text="0"
+                        android:layout_marginLeft="10dp"
+                        />
+
+                    <TextView
+                        android:layout_width="10dp"
+                        android:fontFamily="@font/regular"
+                        android:layout_height="match_parent"
+                        android:text="g"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="1dp"
+            android:id="@+id/card3"
+
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/cartridge3"
+                android:gravity="center"
+                android:background="@drawable/layout_selector"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/cart3Name"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:fontFamily="@font/bold"
+                    android:text="없음"
+                    android:textSize="14dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/cart3"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="15sp"
+                        android:singleLine="true"
+                        android:fontFamily="@font/regular"
+                        android:text="0"
+                        android:layout_marginLeft="10dp"
+                        />
+
+                    <TextView
+                        android:layout_width="10dp"
+                        android:fontFamily="@font/regular"
+                        android:layout_height="match_parent"
+                        android:text="g"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_margin="0dp"
-        android:orientation="horizontal"
-        android:paddingLeft="13dp"
-        android:paddingRight="13dp"
-        >
-
-        <EditText
-            android:id="@+id/cart1"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:singleLine="true"
-            />
-
-        <EditText
-            android:id="@+id/cart2"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:singleLine="true"
-            />
-
-        <EditText
-            android:id="@+id/cart3"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:singleLine="true"
-            />
-    </LinearLayout>
 
 
     <LinearLayout
@@ -118,110 +234,243 @@
         android:layout_margin="0dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/cart4Name"
-            android:layout_width="40dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="없음"
-            android:textSize="14dp"
-            />
 
-        <TextView
-            android:id="@+id/cart5Name"
-            android:layout_width="40dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="없음"
-            android:textSize="14dp" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="1dp"
+            android:id="@+id/card4"
 
-        <TextView
-            android:id="@+id/cart6Name"
-            android:layout_width="40dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="없음"
-            android:textSize="14dp" />
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/cartridge4"
+                android:gravity="center"
+                android:background="@drawable/layout_selector"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/cart4Name"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:fontFamily="@font/bold"
+                    android:text="없음"
+                    android:textSize="14dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/cart4"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="15sp"
+                        android:singleLine="true"
+                        android:fontFamily="@font/regular"
+                        android:text="0"
+                        android:layout_marginLeft="10dp"
+                        />
+
+                    <TextView
+                        android:layout_width="10dp"
+                        android:fontFamily="@font/regular"
+                        android:layout_height="match_parent"
+                        android:text="g"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="1dp"
+            android:id="@+id/card5"
+
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/cartridge5"
+                android:gravity="center"
+                android:background="@drawable/layout_selector"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/cart5Name"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:fontFamily="@font/bold"
+                    android:text="없음"
+                    android:textSize="14dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/cart5"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="15sp"
+                        android:singleLine="true"
+                        android:fontFamily="@font/regular"
+                        android:text="0"
+                        android:layout_marginLeft="10dp"
+                        />
+
+                    <TextView
+                        android:layout_width="10dp"
+                        android:fontFamily="@font/regular"
+                        android:layout_height="match_parent"
+                        android:text="g"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="1dp"
+            android:id="@+id/card6"
+
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/cartridge6"
+                android:gravity="center"
+                android:background="@drawable/layout_selector"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/cart6Name"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:fontFamily="@font/bold"
+                    android:text="없음"
+                    android:textSize="14dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/cart6"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:textSize="15sp"
+                        android:singleLine="true"
+                        android:fontFamily="@font/regular"
+                        android:text="0"
+                        android:layout_marginLeft="10dp"
+                        />
+
+                    <TextView
+                        android:layout_width="10dp"
+                        android:fontFamily="@font/regular"
+                        android:layout_height="match_parent"
+                        android:text="g"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
-    <LinearLayout
-
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_margin="0dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        android:orientation="vertical">
+
+
+
+        <com.suke.widget.SwitchButton
+
+            app:sb_shadow_effect="true"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="35dp"
+            android:layout_gravity="center"
+            android:id="@+id/editMode"
+            app:sb_checked="false"
+            app:sb_enable_effect="true"
+            app:sb_show_indicator="true"
+            app:sb_checked_color="@color/darkNavy"
+            />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        >
-
-        <EditText
-            android:id="@+id/cart4"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:singleLine="true"
-            />
-
-        <EditText
-            android:id="@+id/cart5"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:singleLine="true"
-            />
-
-        <EditText
-
-            android:id="@+id/cart6"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="15sp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:singleLine="true"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="70dp"
+        android:padding="50dp"
+        android:gravity="center"
         >
 
         <Button
             android:id="@+id/customOutputSendBtn"
 
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/btn_round_15"
+            android:textColor="@color/white"
+            android:layout_margin="10dp"
             android:text="출력 시작"/>
 
         <Button
             android:id="@+id/saveSourceCompBtn"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="현재 조합 저장"/>
-
+            android:background="@drawable/btn_round_15_gray"
+            android:layout_margin="10dp"
+            android:text="저장"/>
 
     </LinearLayout>
 

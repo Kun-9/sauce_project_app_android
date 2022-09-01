@@ -1,4 +1,4 @@
-package kr.ac.daejin.sourceApp;
+package kr.ac.daejin.sauceApp;
 
 import org.junit.Test;
 

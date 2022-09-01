@@ -6,7 +6,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "kr.ac.daejin.SourceProjectApp"
+        applicationId "kr.ac.daejin.SauceProjectApp"
         minSdk 23
         targetSdk 31
         versionCode 1
@@ -46,4 +46,7 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.daimajia.androidanimations:library:2.4@aar'
+    implementation 'com.github.zcweng:switch-button:0.0.3@aar'
+    implementation 'com.airbnb.android:lottie:3.0.7'
 }

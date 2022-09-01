@@ -1,4 +1,4 @@
-package kr.ac.daejin.sourceApp;
+package kr.ac.daejin.sauceApp;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -18,7 +18,7 @@ class SauceParse {
     public void saveSauceList(String str) {
         // 현재 절대경로 값 path에 할당
 //        String path = getFilesDir().getAbsolutePath();
-        String path = "/data/data/kr.ac.daejin.SourceProjectApp/files";
+        String path = "/data/data/kr.ac.daejin.SauceProjectApp/files";
 
         try {
 
@@ -34,19 +34,26 @@ class SauceParse {
     }
 
 
-    public String getCurrentSauceInfo() {
+    public String getCurrentSauceInfo(SauceListManager.SauceList sauceList) {
         // 현재 절대경로 값 path에 할당
-
         StringBuilder sb = new StringBuilder();
 
-        String path = "/data/data/kr.ac.daejin.SourceProjectApp/files";
-
+        String path = "/data/data/kr.ac.daejin.SauceProjectApp/files";
+        File dir = new File(path);
         // 절대경로에 chatLog.txt 라는 파일로 저장
         File file = new File(path + "/currentSauceList.json");
 
         try {
-            if (file.length() == 0) {
-                return null;
+            if (!file.exists()) {
+                try {
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    }
+                    file.createNewFile();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             FileInputStream fos = new FileInputStream(file);
@@ -54,6 +61,14 @@ class SauceParse {
             BufferedReader bufferedReader = new BufferedReader(isr);
 
             String line;
+
+            // 빈파일일때
+            if ((line = bufferedReader.readLine()) == null) {
+                return null;
+            }
+
+            sb.append(line);
+
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line);
             }
@@ -63,6 +78,7 @@ class SauceParse {
             return sb.toString();
 
         } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -83,5 +99,26 @@ class SauceParse {
             System.out.println("id = " + id + " name = " + name + " isLiquid = " + isLiquid);
         }
         return sb.toString();
+    }
+
+    public void deleteJson() {
+        // 현재 절대경로 값 path에 할당
+        StringBuilder sb = new StringBuilder();
+
+        String path = "/data/data/kr.ac.daejin.SauceProjectApp/files";
+
+        // 절대경로에 chatLog.txt 라는 파일로 저장
+        File file = new File(path + "/currentSauceList.json");
+
+        try {
+            // 파일이 존재하지 않으면
+            if (file.length() == 0) {
+                return;
+            }
+
+            file.delete();
+
+        } catch (Exception e) {
+        }
     }
 }

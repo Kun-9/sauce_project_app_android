@@ -1,19 +1,24 @@
-package kr.ac.daejin.sourceApp;
+package kr.ac.daejin.sauceApp;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -34,15 +39,17 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    Button startBtn;
-    Button sendBtn, customOutputBtn, registSoruceBtn,
-            showSourceListBtn, showCurrentSourceListBtn, showCurrentSourceExistBtn;
-    Button tempBtn;
-    TextView chatLog;
+    LinearLayout customOutputBtn, registSoruceBtn, tempBtn;
+    Button sendBtn, showSourceListBtn, showCurrentSourceListBtn, showCurrentSourceExistBtn;
+    TextView chatLog, isConnected, existCartridgeNum;
     EditText sendMsgBox;
     EditText nameBox;
     Socket socket;
     StringBuilder chattingStringBuilder;
+    TextView[] cartName;
+    CardView startBtn;
+    LottieAnimationView dotAnimation;
+
 
     public source_class.SourceList sourceList;
     public SauceListManager.SauceList sauceList;
@@ -80,23 +87,25 @@ public class MainActivity extends AppCompatActivity {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-        startBtn = (Button) findViewById(R.id.startBtn);
+
         sendBtn = (Button) findViewById(R.id.sendBtn);
         chatLog = (TextView) findViewById(R.id.chatLog);
         sendMsgBox = (EditText) findViewById(R.id.sendMsgBox);
-        nameBox = (EditText) findViewById(R.id.nameBox);
-        customOutputBtn = (Button) findViewById(R.id.customOutputBtn);
-        registSoruceBtn = (Button) findViewById(R.id.registSoruceBtn);
+        customOutputBtn = (LinearLayout) findViewById(R.id.customOutputBtn);
+        registSoruceBtn = (LinearLayout) findViewById(R.id.registSoruceBtn);
         showSourceListBtn = (Button) findViewById(R.id.showSourceListBtn);
         showCurrentSourceExistBtn = (Button) findViewById(R.id.showCurrentSourceExistBtn);
         showCurrentSourceListBtn = (Button) findViewById(R.id.showCurrentSourceListBtn);
-
-        tempBtn = (Button) findViewById(R.id.tempBtn);
+        isConnected = (TextView) findViewById(R.id.isConnected);
+        existCartridgeNum = (TextView) findViewById(R.id.existCartridgeNum);
+        startBtn = (CardView) findViewById(R.id.startBtn);
+        dotAnimation = (LottieAnimationView) findViewById(R.id.dotAnimation);
+        tempBtn = (LinearLayout) findViewById(R.id.tempBtn);
 
         SauceParse sauceParse = new SauceParse();
 
         try {
-            File dir = new File("/data/data/kr.ac.daejin.SourceProjectApp/files");
+            File dir = new File("/data/data/kr.ac.daejin.SauceProjectApp/files");
             File file = new File(dir + "/currentSauceList.json");
 
             if (!dir.exists()) {
@@ -109,18 +118,27 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        int cnt = 0;
+        for (int i = 0; i < 6; i++) {
+            if (sauceList.getSauceList().get(i).getId().equals("null")) {
+            } else {
+                cnt++;
+            }
+        }
+        existCartridgeNum.setText(String.valueOf(cnt));
 
 //         현재 소스 업데이트
-//        sauceList.updateSauceList();
+        sauceList.updateSauceList();
 
         showSourceListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 StringBuilder sb = new StringBuilder();
-                String info = sauceParse.getCurrentSauceInfo();
+                String info = sauceParse.getCurrentSauceInfo(sauceList);
 
-                sb.append(sauceParse.parseSauceJson(info));
+                sb.append(info);
+//                sb.append(sauceParse.parseSauceJson(info));
 
                 chattingStringBuilder.append("저장된 데이터 :\n");
                 chattingStringBuilder.append(sb).append("\n");
@@ -214,6 +232,38 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        final Handler handler = new Handler() {
+            public void handleMessage(Message msg) {
+
+                int cnt = 0;
+                for (int i = 0; i < 6; i++) {
+                    if (sauceList.getSauceList().get(i).getId().equals("null")) {
+                    } else {
+                        cnt++;
+                    }
+                }
+                existCartridgeNum.setText(String.valueOf(cnt));
+            }
+        };
+
+        final Handler connectedHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                if (checkConnecting == 1) {
+
+                    isConnected.setText("서버와 통신 중");
+                    isConnected.setTextColor(getResources().getColor(R.color.white));
+                    dotAnimation.setVisibility(View.VISIBLE);
+                    startBtn.setCardBackgroundColor(getResources().getColor(R.color.darkNavy));
+                } else {
+                    isConnected.setText("연결");
+                    isConnected.setTextColor(getResources().getColor(R.color.black));
+                    startBtn.setCardBackgroundColor(getResources().getColor(R.color.white));
+                    dotAnimation.setVisibility(View.INVISIBLE);
+
+                }
+            }
+        };
+
         registSoruceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
         // 로그
         chattingStringBuilder = new StringBuilder();
 
+        final int[] port = {8080};
         // 연결 버튼을 눌렀을 때
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,7 +305,11 @@ public class MainActivity extends AppCompatActivity {
                                 inputStream = socket.getInputStream();
                                 outputStream = socket.getOutputStream();
                                 checkConnecting = 1;
-                                startBtn.setText("연결 종료");
+
+                                Message msg = connectedHandler.obtainMessage();
+                                connectedHandler.sendMessage(msg);
+
+
                                 chattingStringBuilder.append("연결 성공\n");
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -297,32 +352,39 @@ public class MainActivity extends AppCompatActivity {
 
                                     // 만약 메시지 타입이 2라면? (소스 스캔 json 배열)
                                     if (messageType.equals("2")) {
-//                                        for (JsonElement sauce : body) {
-//                                            JsonObject JsonObject = sauce.getAsJsonObject();
-//                                            String id = JsonObject.get("id").getAsString();
-//                                            String name = JsonObject.get("name").getAsString();
-//                                            String isLiquid = JsonObject.get("isLiquid").getAsString();
-//                                            Log.d(TAG, "id = " + id + " name = " + name + " isLiquid = " + isLiquid);
-//                                        }
+
+                                        Log.d(TAG, "메시지타입 2번 수신 : 카트리지 스캔 정보");
+
                                         // json 배열 저장
-                                        sauceParse.saveSauceList(body.toString());
+                                        String msg = body.toString();
+                                        Log.d(TAG, "받은 메시지에서 body 파싱 : " + msg);
+
+                                        sauceParse.saveSauceList(msg);
+                                        Log.d(TAG, "1");
                                         sauceList.updateSauceList();
+                                        Log.d(TAG, "2");
                                     }
 
                                     // TextView에 inputStream 내용 이어붙힘
                                     chattingStringBuilder.append(tmp + "\n");
                                     chatLog.setText(chattingStringBuilder);
 
+                                    Message msg = handler.obtainMessage();
+                                    handler.sendMessage(msg);
                                 }
                             } catch (Exception e) {
                                 chattingStringBuilder.append("연결 실패\n");
                                 Log.d(TAG, "수신 종료");
+                                e.printStackTrace();
                             }
                         }
                     }).start();
                 } else {
                     // 이미 실행중일 때
-                    startBtn.setText("연결");
+//                    isConnected.setText("연결");
+//                    isConnected.setTextColor(getResources().getColor(R.color.black));
+//                    startBtn.setCardBackgroundColor(getResources().getColor(R.color.white));
+
                     try {
                         // 소켓 연결 해제 및 종료메시지 출력
                         socket.close();
@@ -341,6 +403,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
 
         // send버튼을 눌렀을 때
         sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -375,6 +440,7 @@ public class MainActivity extends AppCompatActivity {
                 }).start();
             }
         });
+
     }
 
     // 채팅 로그 저장 메소드
@@ -481,6 +547,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //        return sb.toString();
 //    }
+
 
 }
 

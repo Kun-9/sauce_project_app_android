@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#9CF6F7F9">
+    <!-- Background가 될 Item, 단순한 Rectangle Shape를 예시로 했다 -->
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white" />
+
+
+            <!-- 버튼 색깔 -->
+            <solid android:color="@color/darkNavy"/>
+            <!-- 네 귀퉁이? 모양 -->
+            <corners
+                android:bottomLeftRadius="15dp"
+                android:bottomRightRadius="15dp"
+                android:topLeftRadius="15dp"
+                android:topRightRadius="15dp"/>
+
+
+
+            <!-- 테두리 색깔 -->
+            <!--    <stroke android:width="1dp"-->
+            <!--        android:color="#BDBDBD"/>-->
+
+        </shape>
+    </item>
+</ripple>

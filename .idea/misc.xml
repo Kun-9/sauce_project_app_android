@@ -4,23 +4,53 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../Library/Android/sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.3454913880445795" />
+        <entry key="app/src/main/res/drawable/btn_main.xml" value="0.5271794871794871" />
+        <entry key="app/src/main/res/drawable/btn_round.xml" value="0.5271794871794871" />
+        <entry key="app/src/main/res/drawable/btn_round_15.xml" value="0.7104166666666667" />
+        <entry key="app/src/main/res/drawable/btn_round_15_gray.xml" value="0.5235897435897436" />
+        <entry key="app/src/main/res/drawable/btn_round_15_grayt.xml" value="0.5271794871794871" />
+        <entry key="app/src/main/res/drawable/btn_round_15_green.xml" value="0.5235897435897436" />
+        <entry key="app/src/main/res/drawable/btn_round_30.xml" value="0.5271794871794871" />
+        <entry key="app/src/main/res/drawable/btn_rount.xml" value="0.5271794871794871" />
         <entry key="app/src/main/res/drawable/button_effect.xml" value="0.43025641025641026" />
         <entry key="app/src/main/res/drawable/button_style.xml" value="0.43025641025641026" />
+        <entry key="app/src/main/res/drawable/custom_bg.xml" value="0.3972222222222222" />
         <entry key="app/src/main/res/drawable/dialog_round.xml" value="0.48055555555555557" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.375" />
+        <entry key="app/src/main/res/drawable/ketchup_animation.xml" value="0.7104166666666667" />
+        <entry key="app/src/main/res/drawable/layout_custom.xml" value="0.5271794871794871" />
+        <entry key="app/src/main/res/drawable/layout_selector.xml" value="0.5235897435897436" />
+        <entry key="app/src/main/res/drawable/layout_selector_navy.xml" value="0.7104166666666667" />
+        <entry key="app/src/main/res/drawable/navy.xml" value="0.7104166666666667" />
+        <entry key="app/src/main/res/drawable/select.xml" value="0.5235897435897436" />
+        <entry key="app/src/main/res/drawable/select_switch.xml" value="0.5235897435897436" />
+        <entry key="app/src/main/res/drawable/shadow_test.xml" value="0.5271794871794871" />
+        <entry key="app/src/main/res/drawable/switch_off_custom.xml" value="0.4846153846153846" />
+        <entry key="app/src/main/res/drawable/switch_on_custom.xml" value="0.4846153846153846" />
         <entry key="app/src/main/res/drawable/text_style.xml" value="0.43025641025641026" />
+        <entry key="app/src/main/res/drawable/thumb.xml" value="0.5235897435897436" />
+        <entry key="app/src/main/res/drawable/toggle.xml" value="0.5259259259259259" />
+        <entry key="app/src/main/res/drawable/white.xml" value="0.5235897435897436" />
         <entry key="app/src/main/res/font-v26/font_resource.xml" value="0.5333333333333333" />
         <entry key="app/src/main/res/font/font_resource.xml" value="0.4441025641025641" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.4240418118466899" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.26902173913043476" />
         <entry key="app/src/main/res/layout/custom_dialog_textinput.xml" value="0.36322188449848025" />
         <entry key="app/src/main/res/layout/custom_output_page.xml" value="0.41408664577776627" />
+        <entry key="app/src/main/res/layout/editSauceLiquid_page.xml" value="0.38179347826086957" />
+        <entry key="app/src/main/res/layout/editSauce_page.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/edit_sauce_liquid_page.xml" value="0.33763931104356637" />
+        <entry key="app/src/main/res/layout/edit_sauce_name_page.xml" value="0.33763931104356637" />
+        <entry key="app/src/main/res/layout/outputvalue_page.xml" value="0.2507598784194529" />
+        <entry key="app/src/main/res/layout/regist_sauce.xml" value="0.38179347826086957" />
         <entry key="app/src/main/res/layout/source_comp_list.xml" value="0.30570652173913043" />
         <entry key="app/src/main/res/layout/source_regist_page.xml" value="0.45" />
         <entry key="app/src/main/res/layout/source_registed_list_page.xml" value="0.45" />
         <entry key="app/src/main/res/layout/source_view_card.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/submit.xml" value="0.3046875" />
         <entry key="app/src/main/res/layout/tab_layout.xml" value="0.55" />
         <entry key="app/src/main/res/layout/tab_layout2.xml" value="0.2801418439716312" />
+        <entry key="app/src/main/res/layout/typeoutput_page.xml" value="0.38179347826086957" />
       </map>
     </option>
   </component>

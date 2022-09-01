@@ -1,4 +1,4 @@
-package kr.ac.daejin.sourceApp;
+package kr.ac.daejin.sauceApp;
 
 import android.os.Bundle;
 
@@ -10,7 +10,7 @@ public class tempClass extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.source_view_card);
+        setContentView(R.layout.outputvalue_page);
 
 
     }
