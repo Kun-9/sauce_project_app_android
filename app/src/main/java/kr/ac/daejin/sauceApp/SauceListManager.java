@@ -105,6 +105,14 @@ public class SauceListManager {
         public String getId() {
             return id;
         }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setIsLiquid(String isLiquid) {
+            this.isLiquid = isLiquid;
+        }
     }
 }
 

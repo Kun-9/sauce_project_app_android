@@ -10,8 +10,10 @@
     <color name="main">#C9177C34</color>
     <color name="point">#52A694</color>
     <color name="darkNavy">#4B586D</color>
+    <color name="LightDarkNavy">#77859E</color>
     <color name="gray">#ACACAC</color>
     <color name="lightgray">#CFCFCF</color>
     <color name="editColor">#233886</color>
+    <color name="ligtergray">#E1E1E1</color>
 
 </resources>

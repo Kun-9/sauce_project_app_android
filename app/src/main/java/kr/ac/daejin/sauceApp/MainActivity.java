@@ -389,6 +389,8 @@ public class MainActivity extends AppCompatActivity {
                         // 소켓 연결 해제 및 종료메시지 출력
                         socket.close();
                         chattingStringBuilder.append("disconnected\n");
+                        Message msg = connectedHandler.obtainMessage();
+                        connectedHandler.sendMessage(msg);
                         chatLog.setText(chattingStringBuilder);
 
                         // 채팅내역 저장 메소드 실행

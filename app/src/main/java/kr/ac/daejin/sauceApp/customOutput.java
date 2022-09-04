@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,14 +36,18 @@ import java.util.ArrayList;
 
 public class customOutput extends AppCompatActivity {
 
+    int temp;
+
     public static Context context_customOutput;
 
     SwitchButton editMode;
     Dialog customdialog, outputValueDialog, editNameDialog, editLiquidDialog, submitDialog;
     public TextView dialog_msg;
-    public TextView[] cart, cartName;
+    public TextView[] cart, cartName, g;
 
-    LinearLayout[] cartLinear;
+    Gson gson = new Gson();
+
+    CardView[] cartCard;
     source_class.SourceList sourceList;
     SauceListManager.SauceList sauceList;
     ArrayList<String> comp_list;
@@ -57,7 +60,6 @@ public class customOutput extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_output_page);
-
 
         customdialog = new Dialog(this);
         customdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -81,113 +83,111 @@ public class customOutput extends AppCompatActivity {
                 R.id.cart1Name, R.id.cart2Name, R.id.cart3Name, R.id.cart4Name, R.id.cart5Name, R.id.cart6Name
         };
 
-        cartLinear = new LinearLayout[6];
-        Integer[] cartLinearId = {
+        cartCard = new CardView[6];
+        Integer[] cartCardId = {
                 R.id.cartridge1, R.id.cartridge2, R.id.cartridge3, R.id.cartridge4, R.id.cartridge5, R.id.cartridge6
+        };
+
+        g = new TextView[6];
+        Integer[] gId = {
+                R.id.g1, R.id.g2, R.id.g3, R.id.g4, R.id.g5, R.id.g6
         };
 
 
         for (int i = 0; i < 6; i++) {
             cart[i] = findViewById(cartId[i]);
             cartName[i] = findViewById(cartNameId[i]);
-            cartLinear[i] = findViewById(cartLinearId[i]);
+            cartCard[i] = findViewById(cartCardId[i]);
+            g[i] = findViewById(gId[i]);
         }
 
         Button customOutputSendBtn, saveSourceCompBtn;
         customOutputSendBtn = (Button) findViewById(R.id.customOutputSendBtn);
         saveSourceCompBtn = (Button) findViewById(R.id.saveSourceCompBtn);
         editMode = (SwitchButton) findViewById(R.id.editMode);
-        card1 = (CardView) findViewById(R.id.card1);
-        card2 = (CardView) findViewById(R.id.card2);
-        card3 = (CardView) findViewById(R.id.card3);
-        card4 = (CardView) findViewById(R.id.card4);
-        card5 = (CardView) findViewById(R.id.card5);
-        card6 = (CardView) findViewById(R.id.card6);
+
+//        card1 = (CardView) findViewById(R.id.card1);
+//        card2 = (CardView) findViewById(R.id.card2);
+//        card3 = (CardView) findViewById(R.id.card3);
+//        card4 = (CardView) findViewById(R.id.card4);
+//        card5 = (CardView) findViewById(R.id.card5);
+//        card6 = (CardView) findViewById(R.id.card6);
 
 
-        for (int i = 0; i < 6; i++) {
-            if (sauceList.getSauceList().get(i).getId().equals("null")) {
-                cartName[i].setText("없음");
-                cartName[i].setTextColor(getResources().getColor(R.color.lightgray));
-                cart[i].setTextColor(getResources().getColor(R.color.lightgray));
-            } else {
-                cartName[i].setText(sauceList.getSauceList().get(i).getName());
-                cartName[i].setTextColor(getResources().getColor(R.color.black));
-                cart[i].setTextColor(getResources().getColor(R.color.black));
-            }
-        }
+        refreshInfo();
 
 
         editMode.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
 
-                YoYo.with(Techniques.Swing).duration(900).repeat(0).playOn(findViewById(R.id.card6));
-                YoYo.with(Techniques.Swing).duration(900).repeat(0).playOn(findViewById(R.id.card5));
-                YoYo.with(Techniques.Swing).duration(900).repeat(0).playOn(findViewById(R.id.card4));
-                YoYo.with(Techniques.Swing).duration(900).repeat(0).playOn(findViewById(R.id.card3));
-                YoYo.with(Techniques.Swing).duration(900).repeat(0).playOn(findViewById(R.id.card2));
-                YoYo.with(Techniques.Swing).duration(900).repeat(0).playOn(findViewById(R.id.card1));
+                for (int i = 0; i < 6; i++) {
+                    YoYo.with(Techniques.Swing).duration(900).repeat(0).playOn(cartCard[i]);
+                }
 
                 if (editMode.isChecked()) {
 
                     for (int i = 0; i < 6; i++) {
                         if (!sauceList.getSauceList().get(i).getId().equals("null")) {
-                            cartName[i].setText(sauceList.getSauceList().get(i).getName());
-                            cartName[i].setTextColor(getResources().getColor(R.color.editColor));
-                            cart[i].setTextColor(getResources().getColor(R.color.editColor));
+//                            cartName[i].setText(sauceList.getSauceList().get(i).getName());
+                            cartName[i].setTextColor(getResources().getColor(R.color.white));
+                            cart[i].setTextColor(getResources().getColor(R.color.white));
+                            g[i].setTextColor(getResources().getColor(R.color.white));
+                            cartCard[i].setCardBackgroundColor(getResources().getColor(R.color.LightDarkNavy));
                         }
                     }
 
                 } else {
                     for (int i = 0; i <6; i++) {
                         if (!sauceList.getSauceList().get(i).getId().equals("null")) {
-                            cartName[i].setText(sauceList.getSauceList().get(i).getName());
+//                            cartName[i].setText(sauceList.getSauceList().get(i).getName());
                             cartName[i].setTextColor(getResources().getColor(R.color.black));
                             cart[i].setTextColor(getResources().getColor(R.color.black));
+                            g[i].setTextColor(getResources().getColor(R.color.black));
+                            cartCard[i].setCardBackgroundColor(getResources().getColor(R.color.white));
                         }
                     }
-
                 }
             }
         });
 
-        cartLinear[0].setOnClickListener(new View.OnClickListener() {
+
+        cartCard[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkCartridge(0);
             }
         });
 
-        cartLinear[1].setOnClickListener(new View.OnClickListener() {
+        cartCard[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkCartridge(1);
             }
         });
 
-        cartLinear[2].setOnClickListener(new View.OnClickListener() {
+        cartCard[2].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkCartridge(2);
             }
         });
 
-        cartLinear[3].setOnClickListener(new View.OnClickListener() {
+        cartCard[3].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkCartridge(3);
             }
         });
 
-        cartLinear[4].setOnClickListener(new View.OnClickListener() {
+        cartCard[4].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkCartridge(4);
             }
         });
 
-        cartLinear[5].setOnClickListener(new View.OnClickListener() {
+        cartCard[5].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkCartridge(5);
@@ -384,22 +384,23 @@ public class customOutput extends AppCompatActivity {
             public void onClick(View view) {
                 Editable text = valueName.getText();
                 String name = "지정되지 않은 이름";
+
+                System.out.println("edit.onClick 1");
                 if (TextUtils.isEmpty(text)) {
                     Toast.makeText(getApplicationContext(), "이름이 입력되지 않았습니다", Toast.LENGTH_SHORT).show();
                 } else {
 
                     name = text.toString();
 //                     액체 여부 묻고 라즈베리파이에 수정 요청
+                    editLiquidDialog(editNameDialog, name, num);
+
                     editNameDialog.dismiss();
-                    editLiquidDialog(name, num);
-
                 }
-
             }
         });
     }
 
-    void editLiquidDialog(String name, int num) {
+    void editLiquidDialog(Dialog dialog, String name, int num) {
 
         editLiquidDialog = new Dialog(this);
         editLiquidDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -420,14 +421,21 @@ public class customOutput extends AppCompatActivity {
 
                 sendEditSauceMethod(num, name, isLiquid, sauceList.getSauceList().get(num).getId());
                 submitDialog();
+                if (checkConnecting == 1) {
+                    sauceList.getSauceList().get(num).setName(name);
+                    sauceList.getSauceList().get(num).setIsLiquid(isLiquid);
+
+                    SauceParse sauceParse = new SauceParse();
+                    sauceParse.saveSauceList(gson.toJson(sauceList.getSauceList()));
+                    refreshInfo();
+                }
                 editLiquidDialog.dismiss();
+                editNameDialog.dismiss();
             }
         });
     }
 
-
     void submitDialog() {
-
         submitDialog = new Dialog(this);
         submitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         submitDialog.setContentView(R.layout.submit);
@@ -452,9 +460,6 @@ public class customOutput extends AppCompatActivity {
     }
 
 
-
-
-
     public void sendEditSauceMethod(int num, String name, String isLiquid, String id) {
         if (checkConnecting == 1) {
             // 새로운 쓰레드 생성
@@ -466,20 +471,12 @@ public class customOutput extends AppCompatActivity {
                     try {
                         // 입력값 전송
                         SauceListManager.Sauce sauce = new SauceListManager.Sauce(name, isLiquid, id);
-                        if (!sauceList.getSauceList().get(num).getId().equals("null")) {
-                            Gson sendMsg = new Gson();
-                            String s = sb.append("7").append(sendMsg.toJson(sauce)).toString();
+                        Gson sendMsg = new Gson();
+                        String s = sb.append("7").append(sendMsg.toJson(sauce)).toString();
 
-//                        buffer = "7{\"name\" : \"간장\", \"isLiquid\" : \"1\", \"id\" : \"2277814929\"}".getBytes(StandardCharsets.UTF_8);
-                            buffer = s.getBytes(StandardCharsets.UTF_8);
-                            outputStream.write(buffer);
-                            outputStream.flush();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "카트리지가 인식되지 않았습니다\n다시 스캔해주세요", Toast.LENGTH_SHORT).show();
-                        }
-
-
-//                        sb.append("7{\"name\" : \"").append(name).append("\",")
+                        buffer = s.getBytes(StandardCharsets.UTF_8);
+                        outputStream.write(buffer);
+                        outputStream.flush();
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -493,14 +490,30 @@ public class customOutput extends AppCompatActivity {
     }
 
     void checkCartridge(int num) {
-        if (!cartName[num].getText().toString().equals("없음")) {
+        if (!sauceList.getSauceList().get(num).getId().equals("null")) {
             if (editMode.isChecked()) {
-                editNameDialog(1);
+                editNameDialog(num);
             } else {
                 showInputValueDialog(cart[num]);
             }
         }
     }
 
+    void refreshInfo() {
+        for (int i = 0; i < 6; i++) {
+            if (sauceList.getSauceList().get(i).getId().equals("null")) {
+                cartName[i].setText("없음");
+                cartName[i].setTextColor(getResources().getColor(R.color.lightgray));
+                cart[i].setTextColor(getResources().getColor(R.color.lightgray));
+                g[i].setTextColor(getResources().getColor(R.color.lightgray));
 
+
+            } else {
+                cartName[i].setText(sauceList.getSauceList().get(i).getName());
+                cartName[i].setTextColor(getResources().getColor(R.color.black));
+                cart[i].setTextColor(getResources().getColor(R.color.black));
+                g[i].setTextColor(getResources().getColor(R.color.black));
+            }
+        }
+    }
 }
