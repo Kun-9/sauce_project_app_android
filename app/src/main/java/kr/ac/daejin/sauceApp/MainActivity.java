@@ -53,9 +53,12 @@ public class MainActivity extends AppCompatActivity {
 
     public source_class.SourceList sourceList;
     public SauceListManager.SauceList sauceList;
+    public SauceListManager.SauceComp sauceComp;
+    public SauceListManager.SauceCompList sauceCompList;
     public ArrayAdapter Adapter, Adapter2;
     public ArrayList<String> LIST_MENU;
     public ArrayList<String> comp_list;
+    public SauceListManager.SauceCompManager sauceCompManager;
 
 
     public InputStream inputStream;
@@ -75,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         context_main = this;
         sourceList = new source_class.SourceList();
         sauceList = new SauceListManager.SauceList();
+//        sauceComp = new SauceListManager.SauceComp();
+        sauceCompList = new SauceListManager.SauceCompList();
+        sauceCompManager = new SauceListManager.SauceCompManager();
 
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -165,28 +171,7 @@ public class MainActivity extends AppCompatActivity {
         showCurrentSourceExistBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (checkConnecting == 1) {
-                    // 새로운 쓰레드 생성
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            byte[] buffer = new byte[1024];
-                            try {
-                                // 입력값 전송
-                                buffer = "7{\"name\" : \"간장\", \"isLiquid\" : \"1\", \"id\" : \"2277814929\"}".getBytes(StandardCharsets.UTF_8);
-                                outputStream.write(buffer);
-                                outputStream.flush();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-                    Toast.makeText(getApplicationContext(), "전송 성공", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "기기와 연결중이 아닙니다.", Toast.LENGTH_SHORT).show();
-                }
+                sauceCompManager.loadSavedSauceCompString();
             }
         });
 

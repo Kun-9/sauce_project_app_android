@@ -36,20 +36,19 @@ import java.util.ArrayList;
 
 public class customOutput extends AppCompatActivity {
 
-    int temp;
-
-    public static Context context_customOutput;
-
+    public Context context_customOutput;
+    Boolean sauceExist;
     SwitchButton editMode;
     Dialog customdialog, outputValueDialog, editNameDialog, editLiquidDialog, submitDialog;
     public TextView dialog_msg;
     public TextView[] cart, cartName, g;
 
     Gson gson = new Gson();
-
     CardView[] cartCard;
     source_class.SourceList sourceList;
     SauceListManager.SauceList sauceList;
+    SauceListManager.SauceComp sauceComp;
+    SauceListManager.SauceCompManager sauceCompManager;
     ArrayList<String> comp_list;
     CardView card1, card2, card3, card4, card5, card6;
 
@@ -71,6 +70,8 @@ public class customOutput extends AppCompatActivity {
         checkConnecting = ((MainActivity) MainActivity.context_main).checkConnecting;
         sourceList = ((MainActivity) MainActivity.context_main).sourceList;
         sauceList = ((MainActivity) MainActivity.context_main).sauceList;
+        sauceComp = ((MainActivity) MainActivity.context_main).sauceComp;
+        sauceCompManager = ((MainActivity) MainActivity.context_main).sauceCompManager;
         outputStream = ((MainActivity) MainActivity.context_main).outputStream;
 
         cart = new TextView[6];
@@ -106,15 +107,8 @@ public class customOutput extends AppCompatActivity {
         saveSourceCompBtn = (Button) findViewById(R.id.saveSourceCompBtn);
         editMode = (SwitchButton) findViewById(R.id.editMode);
 
-//        card1 = (CardView) findViewById(R.id.card1);
-//        card2 = (CardView) findViewById(R.id.card2);
-//        card3 = (CardView) findViewById(R.id.card3);
-//        card4 = (CardView) findViewById(R.id.card4);
-//        card5 = (CardView) findViewById(R.id.card5);
-//        card6 = (CardView) findViewById(R.id.card6);
-
-
-        refreshInfo();
+//        preSavedSauce preSavedSauce = new preSavedSauce();
+        refreshSauceInfo();
 
 
         editMode.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
@@ -129,7 +123,6 @@ public class customOutput extends AppCompatActivity {
 
                     for (int i = 0; i < 6; i++) {
                         if (!sauceList.getSauceList().get(i).getId().equals("null")) {
-//                            cartName[i].setText(sauceList.getSauceList().get(i).getName());
                             cartName[i].setTextColor(getResources().getColor(R.color.white));
                             cart[i].setTextColor(getResources().getColor(R.color.white));
                             g[i].setTextColor(getResources().getColor(R.color.white));
@@ -140,7 +133,6 @@ public class customOutput extends AppCompatActivity {
                 } else {
                     for (int i = 0; i <6; i++) {
                         if (!sauceList.getSauceList().get(i).getId().equals("null")) {
-//                            cartName[i].setText(sauceList.getSauceList().get(i).getName());
                             cartName[i].setTextColor(getResources().getColor(R.color.black));
                             cart[i].setTextColor(getResources().getColor(R.color.black));
                             g[i].setTextColor(getResources().getColor(R.color.black));
@@ -209,7 +201,15 @@ public class customOutput extends AppCompatActivity {
         saveSourceCompBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registCompDialog();
+//                registCompDialog();
+//                saveCurrentComp();
+//                sauceCompManager.loadSavedSauceCompString("hello2");
+//                sauceCompManager.saveSauceComp("hello2", 0);
+
+
+//                saveCurrentComp("temp1");
+
+                saveCurrentComp("temp2");
             }
         });
     }
@@ -294,9 +294,7 @@ public class customOutput extends AppCompatActivity {
                     str = text.toString();
                     Toast.makeText(getApplicationContext(), "입력되었습니다.", Toast.LENGTH_SHORT).show();
                 }
-
                 tv.setText(str);
-
                 outputValueDialog.dismiss();
             }
         });
@@ -427,7 +425,7 @@ public class customOutput extends AppCompatActivity {
 
                     SauceParse sauceParse = new SauceParse();
                     sauceParse.saveSauceList(gson.toJson(sauceList.getSauceList()));
-                    refreshInfo();
+                    refreshSauceInfo();
                 }
                 editLiquidDialog.dismiss();
                 editNameDialog.dismiss();
@@ -499,14 +497,13 @@ public class customOutput extends AppCompatActivity {
         }
     }
 
-    void refreshInfo() {
+    void refreshSauceInfo() {
         for (int i = 0; i < 6; i++) {
             if (sauceList.getSauceList().get(i).getId().equals("null")) {
                 cartName[i].setText("없음");
                 cartName[i].setTextColor(getResources().getColor(R.color.lightgray));
                 cart[i].setTextColor(getResources().getColor(R.color.lightgray));
                 g[i].setTextColor(getResources().getColor(R.color.lightgray));
-
 
             } else {
                 cartName[i].setText(sauceList.getSauceList().get(i).getName());
@@ -515,5 +512,24 @@ public class customOutput extends AppCompatActivity {
                 g[i].setTextColor(getResources().getColor(R.color.black));
             }
         }
+    }
+
+    void saveCurrentComp(String compName) {
+
+        ArrayList<SauceListManager.Sauce> comp = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            String weight = cart[i].getText().toString();
+            if(weight.equals("0")) {
+               continue;
+            }
+            String name = sauceList.getSauceList().get(i).getName();
+            String isLiquid = sauceList.getSauceList().get(i).getIsLiquid();
+
+
+            comp.add(new SauceListManager.Sauce(name, isLiquid, Integer.parseInt(weight)));
+        }
+        SauceListManager.SauceComp compData = new SauceListManager.SauceComp(comp);
+        sauceCompManager.saveSauceComp(compName, compData);
+//        sauceComp.saveSauceComp("hello2");
     }
 }

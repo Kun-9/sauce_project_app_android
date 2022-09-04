@@ -272,7 +272,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
+                android:layout_height="200dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="5dp"
@@ -284,18 +284,65 @@
                     android:orientation="vertical"
                     android:id="@+id/registSoruceBtn"
                     android:background="@drawable/layout_selector"
-                    android:padding="25dp">
+                    android:paddingTop="25dp"
+                    android:paddingBottom="25dp"
+                    android:paddingRight="35dp"
+                    android:paddingLeft="50dp"
+                    >
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:fontFamily="@font/bold"
+                        android:text="나만의 배합"
+                        android:textSize="16dp"
                         android:textColor="@color/black" />
 
 
                 </LinearLayout>
 
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/layout_selector"
+                    android:paddingTop="25dp"
+                    android:paddingBottom="25dp"
+                    android:paddingRight="35dp"
+                    android:paddingLeft="50dp"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/bold"
+                        android:text="소스 추천"
+                        android:textSize="16dp"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/bold"
+                        android:text="검증된 유명 요리사의 소스를 추천해요"
+                        android:textSize="13dp"
+                        android:textColor="@color/gray" />
+
+
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
 

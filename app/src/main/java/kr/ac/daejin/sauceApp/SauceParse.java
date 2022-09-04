@@ -83,7 +83,7 @@ class SauceParse {
         }
     }
 
-    public String parseSauceJson(String json) {
+    public String currentListjsonToString(String json) {
         StringBuilder sb = new StringBuilder();
         JsonParser jsonParser = new JsonParser();
         JsonElement jsonElement = jsonParser.parse(json);
